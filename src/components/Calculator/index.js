@@ -1,6 +1,7 @@
 import React from "react";
 import Screen from "../Screen";
 import KeyPad from "../KeyPad";
+import TopBar from "../TopBar";
 import { Parser } from "expr-eval";
 import { StyledCalculator } from "../../styledComponents/StyledContainer";
 
@@ -11,7 +12,8 @@ class Calculator extends React.Component {
   state = {
     expressionString: "",
     screenValue: "",
-    shouldClearScreen: false
+    shouldClearScreen: false,
+    currencyConverterVisible: false
   };
 
   onNumberClick = e => {
@@ -124,10 +126,19 @@ class Calculator extends React.Component {
     });
   };
 
+  onConverterToggle = e => {
+      this.setState((state, props) => {
+          return {
+              currencyConverterVisible: !this.state.currencyConverterVisible
+          }
+      });
+  }
+
   render() {
     const screenProps = {
       calculationDetails: this.state.calculationDetails,
-      screenValue: this.state.screenValue
+      screenValue: this.state.screenValue,
+      currencyConverterVisible: this.state.currencyConverterVisible
     };
 
     const keyPadProps = {
@@ -142,6 +153,7 @@ class Calculator extends React.Component {
 
     return (
       <StyledCalculator>
+        <TopBar onConverterToggle={this.onConverterToggle}/>
         <Screen {...screenProps} />
         <KeyPad {...keyPadProps} />
       </StyledCalculator>

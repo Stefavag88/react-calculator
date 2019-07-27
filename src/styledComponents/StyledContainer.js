@@ -13,7 +13,7 @@ const ContainerBase = styled.div`
 `;
 
 const StyledKeyPad = styled(ContainerBase)`
-  height: 60vh;
+  height: 55vh;
   display: grid;
   grid-template-columns: 25% 25% 25% 25%;
   grid-template-rows: auto;
@@ -30,24 +30,44 @@ const StyledScreen = styled(ContainerBase)`
 `;
 
 const StyledResultView = styled.div`
-  font-size: 10vw;
-  width: 100%;
+  width:100%;
+  font-size: 2em;
   text-align: right;
+  display: ${props => (props.visible ? "inline" : "none")};
+  word-wrap: break-word;
 `;
 
-const StyledDetailsView = styled.div`
-  font-size: 1.5em;
-  color: rgba(171, 171, 171, 1);
-  width: 100%;
-  text-align: right;
-  margin: 0.1em;
-`;
-
-const StyledCalculator = styled.div`
+const StyledCalculator = styled(ContainerBase)`
+  max-width: 100%;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-content: center;
+`;
+
+const StyledTopBar = styled(ContainerBase)`
+  height: 5vh;
+  display: flex;
+  padding: 0;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const StyledCurrencyConverter = styled.div`
+width:100%;
+  height: 30vh;
+  padding: 0;
+  justify-content: space-between;
+  align-items: flex-start;
+  display: ${props => (props.visible ? "flex" : "none")};
+`;
+
+const StyledInnerConverterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
 `;
 
 export {
@@ -55,5 +75,7 @@ export {
   StyledCalculator,
   StyledScreen,
   StyledResultView,
-  StyledDetailsView
+  StyledTopBar,
+  StyledCurrencyConverter,
+  StyledInnerConverterContainer
 };
