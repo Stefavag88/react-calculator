@@ -1,0 +1,41 @@
+import styled from 'styled-components'
+import styles from '../common/styles';
+
+const ButtonBase = styled.button`
+  color: ${styles.black};
+  border-radius: 1px;
+  border: 1px solid rgba(196,196,196, 0.2);
+  margin: 1px;
+  padding: 0.4em 0.8em;
+  font-size:1.5em;
+  height: 50px;
+
+  :hover{
+    border: 1px solid rgba(196,196,196, 0.8);
+  }
+`;
+
+const StyledNumberButton = styled(ButtonBase)`
+  background: ${styles.white};
+  font-weight: 500;
+
+  :hover{
+    background: ${styles.lightGrey};
+  }
+`
+const StyledOperatorButton = styled(ButtonBase)`
+  background: ${styles.lightGrey};
+  font-weight: 500; 
+  font-size: ${props => props.fontSize || '1.5em'};
+  text-align: ${props => props.textAlign || 'center'};
+
+  :hover{
+    background: ${styles.lightBlue};
+  }
+`
+export {
+    StyledNumberButton, 
+    StyledOperatorButton
+};
+
+
