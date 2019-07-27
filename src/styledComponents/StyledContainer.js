@@ -2,16 +2,23 @@ import styled from "styled-components";
 import styles from "../common/styles";
 
 const ContainerBase = styled.div`
+  box-sizing: border-box;
   background: rgba(196, 196, 196, 0.4);
   border-radius: 1px;
   padding: 0.1em;
-  width: 320px;
+  min-width: 320px;
+  max-width: 912px;
+  width: 100%;
+  height: 100vh;
 `;
 
 const StyledKeyPad = styled(ContainerBase)`
+  height: 60vh;
   display: grid;
-  grid-template-columns: 80px 80px 80px 80px;
+  grid-template-columns: 25% 25% 25% 25%;
   grid-template-rows: auto;
+  justify-content: start;
+  align-content: end;
 `;
 
 const StyledScreen = styled(ContainerBase)`
@@ -19,22 +26,34 @@ const StyledScreen = styled(ContainerBase)`
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  height: 150px;
+  height: 40vh;
 `;
 
 const StyledResultView = styled.div`
-  font-size: 3em;
+  font-size: 10vw;
   width: 100%;
   text-align: right;
-  margin: 0.1em;
 `;
 
 const StyledDetailsView = styled.div`
   font-size: 1.5em;
-  color: rgba(171,171,171,1);
+  color: rgba(171, 171, 171, 1);
   width: 100%;
   text-align: right;
   margin: 0.1em;
 `;
 
-export { StyledKeyPad, StyledScreen, StyledResultView, StyledDetailsView };
+const StyledCalculator = styled.div`
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export {
+  StyledKeyPad,
+  StyledCalculator,
+  StyledScreen,
+  StyledResultView,
+  StyledDetailsView
+};

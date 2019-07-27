@@ -2,6 +2,7 @@ import React from "react";
 import Screen from "../Screen";
 import KeyPad from "../KeyPad";
 import {Parser} from "expr-eval";
+import { StyledCalculator } from "../../styledComponents/StyledContainer";
 
 const parser = new Parser();
 const regexp = /[+-/*]{1}/g;
@@ -68,13 +69,13 @@ class Calculator extends React.Component {
     };
 
     return (
-      <React.Fragment>
+      <StyledCalculator>
         <Screen {...screenProps}/>
         <KeyPad
           onNumberClick={this.onNumberClick}
           onOperatorClick={this.onOperatorClick}
         />
-      </React.Fragment>
+      </StyledCalculator>
     );
   }
 }

@@ -5,11 +5,10 @@ const ButtonBase = styled.button`
   color: ${styles.black};
   border-radius: 1px;
   border: 1px solid rgba(196,196,196, 0.2);
-  margin: 1px;
   padding: 0.4em 0.8em;
   font-size:1.5em;
-  height: 50px;
-
+  height: 10vh;
+  width: auto;
   :hover{
     border: 1px solid rgba(196,196,196, 0.8);
   }
