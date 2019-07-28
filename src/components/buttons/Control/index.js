@@ -6,7 +6,7 @@ const Control = ({ value, icon, fontSize, onClick }) => {
   return (
     <StyledControlButton value={value} onClick={onClick} fontSize={fontSize}>
       {icon 
-        ? ( <FontAwesomeIcon icon={icon} size="sm" />) 
+        ? ( <FontAwesomeIcon icon={icon} size="xs" />) 
         : value}
     </StyledControlButton>
   );
