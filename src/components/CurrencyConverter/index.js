@@ -130,8 +130,7 @@ class CurrencyConverter extends React.Component {
           <Control
             value={"UPDATE RATES"}
             fontSize={"0.8em"}
-            onClick={this.fetchData}
-          />
+            onClick={this.fetchData}/>
         </StyledInnerConverterContainer>
       </StyledCurrencyConverter>
     );
