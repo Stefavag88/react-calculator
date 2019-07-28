@@ -70,6 +70,15 @@ const StyledInnerConverterContainer = styled.div`
   width: 50%;
 `;
 
+const StyledErrorContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 26, 64, 0.2);
+    color: rgba(255, 26, 64, 0.8);
+    padding: 0.1em;
+`;
+
 export {
   StyledKeyPad,
   StyledCalculator,
@@ -77,5 +86,6 @@ export {
   StyledResultView,
   StyledTopBar,
   StyledCurrencyConverter,
-  StyledInnerConverterContainer
+  StyledInnerConverterContainer, 
+  StyledErrorContainer
 };

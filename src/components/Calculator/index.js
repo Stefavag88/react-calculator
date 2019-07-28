@@ -4,6 +4,7 @@ import KeyPad from "../KeyPad";
 import TopBar from "../TopBar";
 import { Parser } from "expr-eval";
 import { StyledCalculator } from "../../styledComponents/StyledContainer";
+import ErrorBoundary from "../ErrorBoundary";
 
 class Calculator extends React.Component {
   parser = new Parser();
@@ -34,7 +35,7 @@ class Calculator extends React.Component {
   };
 
   onOperatorClick = e => {
-    const operator = e.target.value;
+    const operator = this.operationRegex.test(e) ? e : e.target.value;
     const { screenValue, expressionString } = this.state;
 
     if (screenValue === "") return;
@@ -46,9 +47,11 @@ class Calculator extends React.Component {
           shouldClearScreen: true
         };
       });
-    } else if (expressionString.match(this.operationRegex).length >= 1) {
-      const expressionObj = this.parser.parse(expressionString);
-      const parsedValue = expressionObj.evaluate({ x: screenValue });
+    } else if (
+      expressionString.match(this.operationRegex) &&
+      expressionString.match(this.operationRegex).length >= 1
+    ) {
+      const parsedValue = this.parseExpression(screenValue, expressionString);
 
       this.setState((state, props) => {
         return {
@@ -83,8 +86,7 @@ class Calculator extends React.Component {
 
     if (!screenValue || !expressionString) return;
 
-    const expressionObj = this.parser.parse(expressionString);
-    const parsedValue = expressionObj.evaluate({ x: screenValue });
+    const parsedValue = this.parseExpression(screenValue, expressionString);
 
     this.setState((state, props) => {
       return {
@@ -127,12 +129,23 @@ class Calculator extends React.Component {
   };
 
   onConverterToggle = e => {
-      this.setState((state, props) => {
-          return {
-              currencyConverterVisible: !this.state.currencyConverterVisible
-          }
-      });
-  }
+    this.setState((state, props) => {
+      return {
+        currencyConverterVisible: !this.state.currencyConverterVisible
+      };
+    });
+  };
+
+  parseExpression = (screenValue, expressionString) => {
+    let expressionObj;
+    try {
+      expressionObj = this.parser.parse(expressionString);
+    } catch (error) {
+      throw new Error(`Expression Parsing error: ${error}`);
+    }
+
+    return expressionObj.evaluate({ x: screenValue });
+  };
 
   render() {
     const screenProps = {
@@ -152,11 +165,13 @@ class Calculator extends React.Component {
     };
 
     return (
-      <StyledCalculator>
-        <TopBar onConverterToggle={this.onConverterToggle}/>
-        <Screen {...screenProps} />
-        <KeyPad {...keyPadProps} />
-      </StyledCalculator>
+      <ErrorBoundary>
+        <StyledCalculator>
+          <TopBar onConverterToggle={this.onConverterToggle} />
+          <Screen {...screenProps} />
+          <KeyPad {...keyPadProps} />
+        </StyledCalculator>
+      </ErrorBoundary>
     );
   }
 }
