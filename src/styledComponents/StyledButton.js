@@ -38,6 +38,7 @@ const StyledControlButton = styled(StyledOperatorButton)`
   border: 1px solid transparent;
   font-weight: 300;
   height:5vh;
+  width: 5vh;
   padding: 0.1em;
   font-size: ${props => props.fontSize || '1.2em'};
   justify-self: ${props => props.justifySelf || 'inherit'};
