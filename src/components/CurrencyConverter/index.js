@@ -1,13 +1,19 @@
 import React from "react";
-import { StyledCurrencyConverter, StyledInnerConverterContainer } from "../../styledComponents/StyledContainer";
+import {
+  StyledCurrencyConverter,
+  StyledInnerConverterContainer
+} from "../../styledComponents/StyledContainer";
 import { StyledDropdown } from "./../../styledComponents/StyledDropdown";
-import StyledInput from "./../../styledComponents/StyledInput";
+import { StyledInput, StyledLeftSpan } from "../../styledComponents/StyledText";
+import Control from "../buttons/Control";
 
 class CurrencyConverter extends React.Component {
   state = {
     data: null,
     error: null,
-    shouldRefetch: false
+    shouldRefetch: false,
+    baseRate: "EUR",
+    targetRate: "USD"
   };
 
   componentDidUpdate() {
@@ -18,10 +24,13 @@ class CurrencyConverter extends React.Component {
       this.fetchData();
   }
 
-  fetchData = () => {
-    fetch(
-      "http://data.fixer.io/api/latest?access_key=f440efc02a0d0f2c61695a51626b41e7"
-    )
+  fetchData = (baseCurrency = null) => {
+    let url =
+      "http://data.fixer.io/api/latest?access_key=f440efc02a0d0f2c61695a51626b41e7";
+
+    if (baseCurrency) url = `${url}&base=${baseCurrency}`;
+
+    fetch(url)
       .then(response => {
         if (!response.ok) throw new Error(`Fetch Error: `, response.statusText);
 
@@ -30,7 +39,8 @@ class CurrencyConverter extends React.Component {
       .then(jsonResponse => {
         this.setState((state, props) => {
           return {
-            data: jsonResponse
+            data: jsonResponse,
+            baseRate: jsonResponse.base
           };
         });
       })
@@ -43,11 +53,21 @@ class CurrencyConverter extends React.Component {
       });
   };
 
-  mapDataToOptions = (selectBaseCurrency = false) => {
-    if (!this.state.data || !this.state.data.rates) return;
+  fetchWithChangedBase = e => {
+    const baseRate = e.target.value;
+    this.setState((state, props) => {
+      return { baseRate };
+    });
+    this.fetchData(baseRate);
+  };
 
-    return Object.keys(this.state.data.rates).map(key => {
-      if (selectBaseCurrency && key === this.state.data.base)
+  mapDataToOptions = baseKey => {
+    const { data } = this.state;
+
+    if (!data || !data.rates) return;
+
+    return Object.keys(data.rates).map(key => {
+      if (key === baseKey)
         return (
           <option selected key={key}>
             {key}
@@ -58,18 +78,60 @@ class CurrencyConverter extends React.Component {
     });
   };
 
+  calculateConversion = () => {
+    const { data, targetRate } = this.state;
+
+    if (!data || !data.rates || this.props.inputValue == 0) return 0;
+
+    const rate = data.rates[targetRate];
+    return rate * parseFloat(this.props.inputValue).toFixed(2);
+  };
+
+  showEquity = () => {
+    const { data, targetRate, baseRate } = this.state;
+
+    if (!data || !data.rates) return;
+
+    const rate = data.rates[targetRate];
+    return (
+      <StyledLeftSpan>{`1 ${baseRate} = ${rate} ${targetRate}`}</StyledLeftSpan>
+    );
+  };
+
+  setTargetRate = e => {
+    const targetRate = e.target.value;
+
+    this.setState((state, props) => {
+      return {
+        targetRate
+      };
+    });
+  };
+
   render() {
     return (
       <StyledCurrencyConverter visible={this.props.currencyConverterVisible}>
         <StyledInnerConverterContainer>
-          <StyledInput value={this.props.inputValue || 0} />
-          <StyledDropdown>{this.mapDataToOptions(true)}</StyledDropdown>
-
-          <StyledInput value={this.convertedValue || 0} />
-          <StyledDropdown>{this.mapDataToOptions()}</StyledDropdown>
+          <StyledInput
+            onChange={this.calculateConversion}
+            value={this.props.inputValue || 0}
+          />
+          <StyledDropdown onChange={this.fetchWithChangedBase}>
+            {this.mapDataToOptions(this.state.baseRate)}
+          </StyledDropdown>
+          <StyledInput readonly value={this.calculateConversion()} />
+          <StyledDropdown onChange={this.setTargetRate}>
+            {this.mapDataToOptions(this.state.targetRate)}
+          </StyledDropdown>
         </StyledInnerConverterContainer>
         <StyledInnerConverterContainer>
-            <div>Hello</div>
+          {this.showEquity()}
+          <h6>{this.state.data && `Updated ${this.state.data.date}`}</h6>
+          <Control
+            value={"UPDATE RATES"}
+            fontSize={"0.8em"}
+            onClick={this.fetchData}
+          />
         </StyledInnerConverterContainer>
       </StyledCurrencyConverter>
     );
