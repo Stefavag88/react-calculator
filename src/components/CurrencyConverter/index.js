@@ -4,13 +4,14 @@ import {
   StyledInnerConverterContainer
 } from "../../styledComponents/StyledContainer";
 import { StyledDropdown } from "./../../styledComponents/StyledDropdown";
-import { StyledInput, StyledLeftSpan } from "../../styledComponents/StyledText";
+import { StyledInput, StyledSpan } from "../../styledComponents/StyledText";
 import Control from "../buttons/Control";
+import consts from "../../common/constants";
 
 const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
   const [data, setData] = useState(null);
-  const [baseRate, setBaseRate] = useState("EUR");
-  const [targetRate, setTargetRate] = useState("USD");
+  const [baseRate, setBaseRate] = useState(`${consts.DEFAULT_BASE_RATE}`);
+  const [targetRate, setTargetRate] = useState(`${consts.DEFAULT_TARGET_RATE}`);
   const [error, setError] = useState(null);
 
   useEffect(() => { 
@@ -19,9 +20,7 @@ const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
       if (!currencyConverterVisible || data || error) return;
 
       let url =
-        "http://data.fixer.io/api/latest?access_key=f440efc02a0d0f2c61695a51626b41e7";
-
-      url = `${url}&base=${baseRate}`;
+        `${consts.API_URL}?access_key=${consts.API_KEY}&base=${baseRate}`;
 
       fetch(url)
         .then(response => response.json())
@@ -60,7 +59,7 @@ const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
 
     const rate = data.rates[targetRate];
     return (
-      <StyledLeftSpan>{`1 ${baseRate} = ${rate} ${targetRate}`}</StyledLeftSpan>
+      <StyledSpan textAlign={'right'}>{`1 ${baseRate} = ${rate} ${targetRate}`}</StyledSpan>
     );
   };
 
@@ -74,7 +73,7 @@ const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
     <StyledCurrencyConverter visible={currencyConverterVisible}>
       <StyledInnerConverterContainer>
         <StyledInput readOnly value={inputValue || 0} />
-        <StyledDropdown value={baseRate} onChange={doSetBaseRate}>
+        <StyledDropdown textAlign={'left'} value={baseRate} onChange={doSetBaseRate}>
           {mapDataToOptions()}
         </StyledDropdown>
         <StyledInput readOnly value={calculateConversion()} />
@@ -82,10 +81,11 @@ const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
           {mapDataToOptions()}
         </StyledDropdown>
       </StyledInnerConverterContainer>
-      <StyledInnerConverterContainer>
+      <StyledInnerConverterContainer justifyContent={'flex-end'}>
         {showEquity()}
-        <h6>{data && `Updated ${data.date}`}</h6>
+        <StyledSpan textAlign={'right'}>{data && `Updated ${data.date}`}</StyledSpan>
         <Control
+          textAlign={'right'}
           value={"UPDATE RATES"}
           fontSize={"0.8em"}
           onClick={() => setData(null)}

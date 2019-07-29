@@ -15,6 +15,8 @@ const StyledDropdown = styled.select`
   cursor: pointer;
   max-height: 10vh;
   z-index:1000;
+  padding:0.1em 0.3em;
+  text-align: ${props => props.textAlign};
 
   option{
       font-size:0.7em;

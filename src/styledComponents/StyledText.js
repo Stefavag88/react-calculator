@@ -8,9 +8,10 @@ const StyledInput = styled.input`
   box-shadow: none;
   font-size: 1.5em;
   font-weight:300;
+  padding:0.3em;
 `;
 
-const StyledLeftSpan = styled.span`
+const StyledSpan = styled.span`
   background: none;
   width: 100%;
   border: none;
@@ -18,8 +19,8 @@ const StyledLeftSpan = styled.span`
   box-shadow: none;
   padding:0.1em;
   font-size: 0.8em;
-  font-weight:400;
-  text-align:center;
+  font-weight:500;
+  text-align: ${props => props.textAlign};
 `;
 
-export {StyledInput, StyledLeftSpan};
+export {StyledInput, StyledSpan};

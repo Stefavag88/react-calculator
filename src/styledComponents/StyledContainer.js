@@ -66,7 +66,10 @@ width:100%;
 const StyledInnerConverterContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  height:100%;
+  /* align-items: flex-end;
+  align-content: flex-end; */
+  justify-content: ${props => props.justifyContent};
   width: 50%;
 `;
 
