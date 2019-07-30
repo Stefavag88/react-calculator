@@ -5,14 +5,16 @@ import {
 } from "../../styledComponents/StyledContainer";
 import CurrencyConverter from "../CurrencyConverter";
 
+const showZeroIfEmpty = value => value === "" ? "0": value;
+
 const Screen = ({ screenValue, currencyConverterVisible }) => (
   <StyledScreen>
     <CurrencyConverter
-      inputValue={screenValue}
+      inputValue={showZeroIfEmpty(screenValue)}
       currencyConverterVisible={currencyConverterVisible}
     />
     <StyledResultView visible={!currencyConverterVisible}>
-      {screenValue}
+      {showZeroIfEmpty(screenValue)}
     </StyledResultView>
   </StyledScreen>
 );
