@@ -8,25 +8,23 @@ import { StyledInput, StyledSpan } from "../../styledComponents/StyledText";
 import Control from "../buttons/Control";
 import consts from "../../common/constants";
 
+const baseRate = `${consts.DEFAULT_BASE_RATE}`; //Current subscription does not support changing base currency
+
 const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
   const [data, setData] = useState(null);
-  const [baseRate, setBaseRate] = useState(`${consts.DEFAULT_BASE_RATE}`);
   const [targetRate, setTargetRate] = useState(`${consts.DEFAULT_TARGET_RATE}`);
   const [error, setError] = useState(null);
 
   useEffect(() => { 
 
     const fetchData = () => {
-      if (!currencyConverterVisible || data || error) return;
 
-      let url =
-        `${consts.API_URL}?access_key=${consts.API_KEY}&base=${baseRate}`;
+      if (!currencyConverterVisible || data) return;
 
-      fetch(url)
+      fetch(`${consts.API_URL}`)
         .then(response => response.json())
         .then(jsonResponse => {
           setData(jsonResponse);
-          setBaseRate(jsonResponse.base);
         })
         .catch(err => {
             setError(err);
@@ -34,12 +32,7 @@ const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
     };
 
     fetchData();
-  }, [baseRate, currencyConverterVisible, data, error]);
-
-  const doSetBaseRate = e => {
-    const baseRate = e.target.value;
-    setBaseRate(baseRate);
-  };
+  }, [currencyConverterVisible, data]);
 
   const mapDataToOptions = () => {
     if (!data || !data.rates) return;
@@ -69,11 +62,13 @@ const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
     setTargetRate(targetRate);
   };
 
+  if(error) throw error;
+
   return (
     <StyledCurrencyConverter visible={currencyConverterVisible}>
       <StyledInnerConverterContainer>
         <StyledInput readOnly value={inputValue || 0} />
-        <StyledDropdown textAlign={'left'} value={baseRate} onChange={doSetBaseRate}>
+        <StyledDropdown textAlign={'left'} value={baseRate} disabled>
           {mapDataToOptions()}
         </StyledDropdown>
         <StyledInput readOnly value={calculateConversion()} />
