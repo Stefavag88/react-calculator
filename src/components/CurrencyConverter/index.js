@@ -21,7 +21,7 @@ const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
 
       if (!currencyConverterVisible || data) return;
 
-      fetch(`${consts.API_URL}`)
+      fetch(`${consts.API_URL}&access_key=${consts.API_KEY}`)
         .then(response => response.json())
         .then(jsonResponse => {
           setData(jsonResponse);
