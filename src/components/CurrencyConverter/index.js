@@ -76,13 +76,13 @@ const CurrencyConverter = ({ inputValue, currencyConverterVisible }) => {
           {mapDataToOptions()}
         </StyledDropdown>
       </StyledInnerConverterContainer>
-      <StyledInnerConverterContainer justifyContent={'flex-end'}>
+      <StyledInnerConverterContainer justifyContent={'flex-end'} alignItems={'flex-end'}>
         {showEquity()}
         <StyledSpan textAlign={'right'}>{data && `Updated ${data.date}`}</StyledSpan>
         <Control
-          textAlign={'right'}
+          width={'8rem'}
+          fontSize={'0.8em'}
           value={"UPDATE RATES"}
-          fontSize={"0.8em"}
           onClick={() => setData(null)}
         />
       </StyledInnerConverterContainer>

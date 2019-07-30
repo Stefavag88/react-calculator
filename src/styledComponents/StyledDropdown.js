@@ -7,7 +7,7 @@ const StyledDropdown = styled.select`
   background: none;
   border: none;
   width: 100%;
-  max-width: 180px;
+  max-width: 10rem;
   outline: none;
   box-shadow: none;
   font-size: 1.2em;

@@ -4,7 +4,6 @@ import styles from "../common/styles";
 const ContainerBase = styled.div`
   box-sizing: border-box;
   background: rgba(196, 196, 196, 0.4);
-  border-radius: 1px;
   padding: 0.1em;
   min-width: 320px;
   max-width: 912px;
@@ -67,9 +66,8 @@ const StyledInnerConverterContainer = styled.div`
   display: flex;
   flex-direction: column;
   height:100%;
-  /* align-items: flex-end;
-  align-content: flex-end; */
   justify-content: ${props => props.justifyContent};
+  align-items: ${props => props.alignItems};
   width: 50%;
 `;
 
